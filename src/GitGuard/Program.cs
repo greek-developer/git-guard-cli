@@ -13,7 +13,7 @@ public class Program
 {
     public static Task<int> Main(string[] args)
     {
-        var rootCommand = new RootCommand("GitGuard: A tool to manage multiple repositories.");
+        var rootCommand = new RootCommand("gitguard: A tool to manage multiple repositories.");
 
         var getConfigPathCommand = new Command(
                 "get-config-path",
@@ -25,7 +25,7 @@ public class Program
     
         AddCommands(rootCommand, FolderCommands.GenerateFolderCommands());
         AddCommands(rootCommand, RepositoriesCommands.GenerateRepositoriesCommands());
-        
+
         return rootCommand
             .Parse(args)
             .InvokeAsync();
