@@ -16,9 +16,10 @@
 
   <PropertyGroup>
     <ToolCommandName>gitguard</ToolCommandName>    
-    <PackageId>grdev.gitguard</PackageId>    
-    <Authors>Thomas Sarmis (thomas.sarmis@gmail.com), GRDEV</Authors>
+    <PackageId>grdev.gitguard</PackageId>  
+    <Title>Greek Developer - Git Guard CLI</Title>	
     <Description>Git Repositories Management CLI</Description>    
+	<Authors>Thomas Sarmis (thomas.sarmis@gmail.com), GRDEV</Authors>    
     <RepositoryUrl>https://github.com/greek-developer/gitguard</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://greekdeveloper.com/projects/gitguard</PackageProjectUrl>
