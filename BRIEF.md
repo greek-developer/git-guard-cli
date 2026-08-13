@@ -27,7 +27,7 @@ There are **no tests** — `dotnet test` finds no test project. See [Tests](#tes
 Install the packed tool to exercise it the way users will:
 
 ```powershell
-dotnet tool install grdev.git-guard-cli --global --add-source ./nupkg --prerelease
+dotnet tool install grdev.git-guard-cli --global --add-source ./release --prerelease
 ```
 
 ### Commands
@@ -86,7 +86,6 @@ Known deviations from the standard, all pre-existing:
 | `grdev.gitguard.slnx` | Named `gitguard`, not `git-guard-cli` — it predates the rename |
 | No `LICENSE` file | The `.csproj` declares `MIT` via `PackageLicenseExpression`, but the repository carries no licence text |
 | No `AssemblyName` override | The binary is `GitGuard.exe`, so `--help` renders usage as `GitGuard [command]` rather than `git-guard`. The installed tool shim is still `git-guard` |
-| `release/` not in `.gitignore` | Its contents are ignored only because they match `*.nupkg`; the standard asks for the folder itself |
 
 ## Stack
 
@@ -151,6 +150,12 @@ seam first.
 
 ### 2026-08-13
 
+- `pack` output moved from `../../nupkg` to **`../../release`**, and `release/` was added to
+  `.gitignore` under a "Project-specific" section. The standard puts packages under
+  `./release`; `nupkg/` was not ignored as a directory — only `*.nupkg` and `*.snupkg` inside
+  it were, so any other pack output landed committable. `release/` had in turn been covered
+  only incidentally by the .NET template's `[Rr]elease/` build-configuration pattern, hence
+  the explicit entry. The sibling `choreo-typer-cli` carries the identical change.
 - `Directory.Build.props` now sets `Nullable`, `ImplicitUsings`, `TreatWarningsAsErrors` and
   `EnforceCodeStyleInBuild` for every project. The existing code needed no changes to build
   clean under them.
