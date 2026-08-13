@@ -38,6 +38,8 @@ dotnet tool install grdev.git-guard-cli --global --add-source ./nupkg --prerelea
 | `git-guard folders list` | List the monitored folders as `name: path` |
 | `git-guard folders add <path> [--name\|-n <name>]` | Add a folder. The path is resolved to an absolute one; the name defaults to the last path segment |
 | `git-guard repositories scan` | Walk every monitored folder and report the repositories found |
+| `git-guard version` | Print `version` / `commit-text` / `commit-sha` / `build-time` from `ProductionVersion.json` |
+| `git-guard skill` | Print the embedded agent guide to stdout and nothing else, so `> SKILL.md` produces a usable file |
 
 `scan` takes four repeatable filters, all substring matches and all case-insensitive:
 
@@ -70,15 +72,21 @@ Standard grdev layout ([AGENTS.md](AGENTS.md)), less what does not exist yet: th
 
 All source is one project, `src/GitGuard`, split by concern: `Program.cs` composes the
 command tree, `Commands/` holds one static class per command group, `Config/` holds the
-config model and its load/save, and `RepositoryManager.cs` does the scanning.
+config model and its load/save, `RepositoryManager.cs` does the scanning, `Versioning/` reads
+the build-time `ProductionVersion.json`, and `Skills/` reads the embedded agent guide.
+
+`skills/git-guard/SKILL.md` is the one source of truth for the agent guide — it is embedded
+into the assembly by the `.csproj` and printed by `git-guard skill`. Edit it there, never in
+a copy.
 
 Known deviations from the standard, all pre-existing:
 
 | Deviation | Detail |
 |---|---|
-| `PackageOutputPath` | Still `../../nupkg`. The standard puts packages under `./release`, which is gitignored; `nupkg/` is not |
 | `grdev.gitguard.slnx` | Named `gitguard`, not `git-guard-cli` — it predates the rename |
 | No `LICENSE` file | The `.csproj` declares `MIT` via `PackageLicenseExpression`, but the repository carries no licence text |
+| No `AssemblyName` override | The binary is `GitGuard.exe`, so `--help` renders usage as `GitGuard [command]` rather than `git-guard`. The installed tool shim is still `git-guard` |
+| `release/` not in `.gitignore` | Its contents are ignored only because they match `*.nupkg`; the standard asks for the folder itself |
 
 ## Stack
 
@@ -90,8 +98,20 @@ Known deviations from the standard, all pre-existing:
 | JSON | `System.Text.Json` | Per the standard. Config properties carry explicit `[JsonPropertyName]` attributes, so renaming a C# property does not break an existing config file |
 | Versioning | `Nerdbank.GitVersioning` | From `Directory.Build.props` |
 
-`Nullable` and `ImplicitUsings` are both enabled in the `.csproj`. Neither
-`TreatWarningsAsErrors` nor `EnforceCodeStyleInBuild` is set anywhere.
+`Nullable`, `ImplicitUsings`, `TreatWarningsAsErrors` and `EnforceCodeStyleInBuild` are all
+set once in `Directory.Build.props`. The build is warning-free with them on; nothing is
+suppressed and no rule severity has been lowered to keep it that way.
+
+**`ProductionVersion.json` is generated, never written by hand.** The
+`GenerateProductionVersion` target in the `.csproj` writes it into the intermediate folder
+before `AssignTargetPaths`, so it lands in the build output and in the packed tool. The git
+format string it passes needs a per-platform escape (`%%s` on Windows, `%s` elsewhere) because
+`Exec` goes through `cmd` on Windows and `sh` on Linux — collapsing that to one form puts a
+literal `%s` in the file on the other platform.
+
+Console output is pinned to UTF-8 in `Program.cs`. Without it a redirected `git-guard skill`
+is written in the console's legacy code page and every em dash in the guide is mangled, so
+the emitted file stops matching the source.
 
 **Scanning is eager and happens once.** `RepositoryManager` has a static constructor that
 runs the full recursive walk of every monitored folder, so the first touch of
@@ -122,12 +142,25 @@ seam first.
   change that leaves them behind makes the tool look freshly installed and silently reports
   nothing.
 - **Never let one unreadable folder end the scan.** A monitored folder that has been deleted
-  or is not readable currently throws out of the static constructor and takes every command
-  with it, including `folders list` — a user cannot even see the entry to remove it.
+  or is not readable throws out of the `SelectMany` in `ScanFolderForRepositories`, so
+  `repositories scan` reports nothing at all — the repositories under the folders that are
+  fine are lost with it. `folders list` and `get-config-path` still work, because neither
+  touches `RepositoryManager` and its static constructor therefore never runs.
 
 ## Decisions
 
 ### 2026-08-13
+
+- `Directory.Build.props` now sets `Nullable`, `ImplicitUsings`, `TreatWarningsAsErrors` and
+  `EnforceCodeStyleInBuild` for every project. The existing code needed no changes to build
+  clean under them.
+- The build writes `ProductionVersion.json` and `git-guard version` prints it, per the
+  standard's production-version rule.
+- The agent guide lives at `skills/git-guard/SKILL.md`, is embedded in the assembly, and is
+  printed by `git-guard skill`. `Program.cs` pins console output to UTF-8 so a redirect
+  reproduces the file byte for byte.
+- `Validated<T>` was brought over from `youtube-cli` alongside `ProductionVersion` rather than
+  reshaping the parser's error reporting; the two repositories keep the same file.
 
 - The tool is **`git-guard`** and the package **`grdev.git-guard-cli`**, matching the
   repository name per the standard's naming chain.
