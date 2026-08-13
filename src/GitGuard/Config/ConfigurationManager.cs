@@ -14,10 +14,16 @@ public static class ConfigurationManager
     
     public static GitGuardConfig Config { get => _config ??= LoadConfig(); }
 
+    /// <summary>
+    /// Everything this tool keeps on the machine lives in one hidden folder named after the
+    /// package id - see AGENTS.md, "Where a tool stores things".
+    /// </summary>
+    public const string StorageFolderName = ".grdev.git-guard-cli";
+
     public static string GetConfigPath() =>
         Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            ".gitguard",
+            StorageFolderName,
             "config.json");
 
     private static GitGuardConfig LoadConfig()
