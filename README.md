@@ -1,4 +1,4 @@
-# grdev.gitguard
+# grdev.git-guard-cli
 
 ## Versioning
 

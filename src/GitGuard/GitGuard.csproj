@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ToolCommandName>gitguard</ToolCommandName>    
-    <PackageId>grdev.gitguard</PackageId>  
-    <Title>Greek Developer - Git Guard CLI</Title>	
-    <Description>Git Repositories Management CLI</Description>    
-	<Authors>Thomas Sarmis (thomas.sarmis@gmail.com), GRDEV</Authors>    
-    <RepositoryUrl>https://github.com/greek-developer/gitguard</RepositoryUrl>
+    <ToolCommandName>git-guard</ToolCommandName>
+    <PackageId>grdev.git-guard-cli</PackageId>
+    <Title>Greek Developer - Git Guard CLI</Title>
+    <Description>Git Repositories Management CLI</Description>
+	<Authors>Thomas Sarmis (thomas.sarmis@gmail.com), GRDEV</Authors>
+    <RepositoryUrl>https://github.com/greek-developer/git-guard-cli</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://greekdeveloper.com/projects/gitguard</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
