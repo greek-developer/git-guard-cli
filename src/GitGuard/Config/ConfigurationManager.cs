@@ -1,8 +1,7 @@
 
-using System.CommandLine;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.IO;
 
 
 namespace GitGuard.Config;
@@ -11,7 +10,7 @@ public static class ConfigurationManager
 {
 
     private static GitGuardConfig? _config;
-    
+
     public static GitGuardConfig Config { get => _config ??= LoadConfig(); }
 
     /// <summary>

@@ -1,5 +1,5 @@
 using System.CommandLine;
-using System.Net.NetworkInformation;
+
 using LibGit2Sharp;
 
 namespace GitGuard.Commands;
@@ -16,7 +16,7 @@ public static class RepositoriesCommands
         repositoriesScanCommand.Options.Add(new Option<string[]>("--origin-filter-include", "-ofi"));
         repositoriesScanCommand.Options.Add(new Option<string[]>("--origin-filter-exclude", "-ofe"));
 
-        repositoriesScanCommand.SetAction( pr =>
+        repositoriesScanCommand.SetAction(pr =>
         {
             var originFilterInclude = pr.GetValue<string[]>("--origin-filter-include") ?? Array.Empty<string>();
             var originFilterExclude = pr.GetValue<string[]>("--origin-filter-exclude") ?? Array.Empty<string>();
@@ -25,7 +25,7 @@ public static class RepositoriesCommands
 
             var repositories = RepositoryManager
                 .Repositories
-                .Where(repo => originFilterInclude.Length == 0 || originFilterInclude.Any(f => repo.repository.OriginContains(f)))                
+                .Where(repo => originFilterInclude.Length == 0 || originFilterInclude.Any(f => repo.repository.OriginContains(f)))
                 .Where(repo => originFilterExclude.Length == 0 || !originFilterExclude.Any(f => repo.repository.OriginContains(f)))
                 .Where(repo => pathFilterInclude.Length == 0 || pathFilterInclude.Any(f => repo.path.Contains(f, StringComparison.OrdinalIgnoreCase)))
                 .Where(repo => pathFilterExclude.Length == 0 || !pathFilterExclude.Any(f => repo.path.Contains(f, StringComparison.OrdinalIgnoreCase)));
@@ -35,8 +35,8 @@ public static class RepositoriesCommands
             Console.WriteLine("");
             Console.WriteLine(
                 string.Join(
-                    Environment.NewLine, 
-                    repositories.Select(repo => GetRepositoryDescription(repo))));            
+                    Environment.NewLine,
+                    repositories.Select(repo => GetRepositoryDescription(repo))));
             Console.WriteLine("");
         });
 
@@ -46,11 +46,11 @@ public static class RepositoriesCommands
         };
 
         return new[] { RepositoriesCommand };
-    }      
+    }
 
     static string GetRepositoryDescription((string path, LibGit2Sharp.Repository repository) repo)
     {
-        var status = repo.repository.RetrieveStatus(new StatusOptions());        
+        var status = repo.repository.RetrieveStatus(new StatusOptions());
         return $"[{(status.IsDirty ? '+' : ' ')}]  {repo.path} => {repo.repository.Network.Remotes["origin"]?.Url}";
     }
 

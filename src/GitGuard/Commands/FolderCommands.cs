@@ -1,8 +1,5 @@
 using System.CommandLine;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
-using System.Runtime.CompilerServices;
 
 using GitGuard.Config;
 
@@ -45,7 +42,7 @@ public static class FolderCommands
                 FriendlyName = name
             });
 
-            ConfigurationManager.SaveConfig();           
+            ConfigurationManager.SaveConfig();
         });
 
         var foldersCommand = new Command("folders", "Manage monitored folders")
@@ -55,5 +52,5 @@ public static class FolderCommands
         };
 
         return new[] { foldersCommand };
-    }  
+    }
 }
