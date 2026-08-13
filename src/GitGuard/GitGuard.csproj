@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,7 @@
     <RootNamespace>GitGuard</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageOutputPath>../../nupkg</PackageOutputPath>
+    <PackageOutputPath>../../release</PackageOutputPath>
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
