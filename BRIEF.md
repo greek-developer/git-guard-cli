@@ -185,3 +185,11 @@ seam first.
   than left to shift under someone's next unrelated commit.
 - This log starts here. Decisions taken before today were never written down, so the
   repository is described as it stands above rather than reconstructed as dated entries.
+
+### 2026-09-01
+
+- `PackageProjectUrl` points at this tool's page on the blog,
+  `https://greekdeveloper.com/tools/git-guard-cli/`, so the NuGet listing and the site agree on one
+  canonical address.
+- `RepositoryUrl` is published for every tool, private repository or not.
+- `README.md` carries the project-page link and the install command line.

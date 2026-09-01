@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,7 +18,7 @@
 	<Authors>Thomas Sarmis (thomas.sarmis@gmail.com), GRDEV</Authors>
     <RepositoryUrl>https://github.com/greek-developer/git-guard-cli</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://greekdeveloper.com/projects/gitguard</PackageProjectUrl>
+    <PackageProjectUrl>https://greekdeveloper.com/tools/git-guard-cli/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

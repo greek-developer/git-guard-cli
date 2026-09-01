@@ -1,5 +1,33 @@
 # grdev.git-guard-cli
 
+`git-guard` answers one question across a whole machine: **which of my repositories have work
+in them that is not committed?** Point it at the folders where your clones live and a single
+`git-guard scan` walks all of them, reporting each repository's path, its `origin` URL and
+whether the working tree is dirty.
+
+It is read-only. It never fetches, pulls, pushes, commits or stages anything — the only state
+it writes is its own list of monitored folders.
+
+**Project page:** [greekdeveloper.com/tools/git-guard-cli](https://greekdeveloper.com/tools/git-guard-cli/)
+
+## Install
+
+```
+dotnet tool install --global grdev.git-guard-cli
+```
+
+## Usage
+
+Register the folders your clones live in, then scan:
+
+```
+git-guard folders add C:\src
+git-guard scan
+```
+
+Run `git-guard --help` to see every command.
+
+
 ## Versioning
 
 Versions are computed by [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning)
