@@ -26,9 +26,17 @@ internal static class ConfigCommand
 
     private static int RunEdit(ParseResult _)
     {
-        // Touching Config loads-or-creates the file with its defaults if it doesn't exist yet.
-        _ = ConfigurationManager.Config;
         var path = ConfigurationManager.GetConfigPath();
+
+        if (!File.Exists(path))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
+            // Same default shape ConfigurationManager.LoadConfig() would create - a
+            // fill-in-the-blanks starting point, not a missing file the editor would refuse
+            // to open.
+            File.WriteAllText(path, "{\n  \"folders\": []\n}\n");
+        }
 
         var editor = Environment.GetEnvironmentVariable("VISUAL")
             ?? Environment.GetEnvironmentVariable("EDITOR")
