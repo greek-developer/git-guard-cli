@@ -34,7 +34,8 @@ dotnet tool install grdev.git-guard-cli --global --add-source ./release --prerel
 
 | Command | Does |
 |---|---|
-| `git-guard get-config-path` | Print the full path of the config file |
+| `git-guard config path` | Print the full path of the config file |
+| `git-guard config edit` | Open the config file in `$VISUAL`/`$EDITOR` |
 | `git-guard folders list` | List the monitored folders as `name: path` |
 | `git-guard folders add <path> [--name\|-n <name>]` | Add a folder. The path is resolved to an absolute one; the name defaults to the last path segment |
 | `git-guard repositories scan` | Walk every monitored folder and report the repositories found |
@@ -143,10 +144,17 @@ seam first.
 - **Never let one unreadable folder end the scan.** A monitored folder that has been deleted
   or is not readable throws out of the `SelectMany` in `ScanFolderForRepositories`, so
   `repositories scan` reports nothing at all — the repositories under the folders that are
-  fine are lost with it. `folders list` and `get-config-path` still work, because neither
+  fine are lost with it. `folders list` and `config path` still work, because neither
   touches `RepositoryManager` and its static constructor therefore never runs.
 
 ## Decisions
+
+### 2026-09-08
+
+- `get-config-path` was replaced with a `config` command group — `config path` (same
+  behaviour) and a new `config edit`, which opens the file in `$VISUAL`/`$EDITOR`, per the
+  refreshed grdev standard requiring at least these two subcommands on every tool that reads
+  a config file.
 
 ### 2026-08-13
 

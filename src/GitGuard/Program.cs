@@ -16,13 +16,7 @@ public class Program
 
         var rootCommand = new RootCommand("gitguard: A tool to manage multiple repositories.");
 
-        var getConfigPathCommand = new Command(
-                "get-config-path",
-                "Displays the full path to the config file (in user's profile)");
-
-        getConfigPathCommand.SetAction(_ => Console.WriteLine(ConfigurationManager.GetConfigPath()));
-
-        rootCommand.Add(getConfigPathCommand);
+        rootCommand.Add(ConfigCommand.Create());
 
         AddCommands(rootCommand, FolderCommands.GenerateFolderCommands());
         AddCommands(rootCommand, RepositoriesCommands.GenerateRepositoriesCommands());

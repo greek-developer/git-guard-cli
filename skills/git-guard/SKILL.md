@@ -107,7 +107,7 @@ scanned in full either way.
 ## Where its own state lives
 
 ```bash
-git-guard get-config-path
+git-guard config path
 ```
 
 ```
@@ -115,7 +115,8 @@ C:\Users\you\.grdev.git-guard-cli\config.json
 ```
 
 That file holds the monitored folders and nothing else, and is created empty on first use.
-There are no environment variables and no other configuration source.
+There are no environment variables and no other configuration source. `git-guard config edit`
+opens it directly in `$VISUAL`/`$EDITOR`.
 
 There is **no `folders remove` command.** To drop or rename a monitored folder, edit that JSON
 directly — its `folders` array holds `path` and `friendlyName` per entry. Read it, change it,
@@ -141,7 +142,7 @@ looking at the output — it equally means no folders are registered.
 
 **A monitored folder that has been deleted or is unreadable fails the whole scan,** not just
 that folder's share of it, so the repositories under the folders that are fine go unreported
-too. `folders list` and `get-config-path` are unaffected — they never walk the disk — so you
+too. `folders list` and `config path` are unaffected — they never walk the disk — so you
 can still see the offending entry and remove it from the config file.
 
 ## Never
