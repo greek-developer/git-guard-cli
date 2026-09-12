@@ -17,7 +17,7 @@ internal static class VersionCommand
 
         if (!File.Exists(path))
         {
-            // Diagnostics go to stderr so redirecting stdout still yields only the four lines.
+            // Diagnostics go to stderr so redirecting stdout still yields only the version block.
             Console.Error.WriteLine(
                 $"{ProductionVersion.FileName} is missing from '{AppContext.BaseDirectory}'. It is written at build time.");
             return 1;
@@ -35,6 +35,8 @@ internal static class VersionCommand
         }
 
         Console.Out.WriteLine(version.Value!.ToDisplay());
+        Console.Out.WriteLine();
+        Console.Out.WriteLine("To update: dotnet tool update -g grdev.git-guard-cli");
         return 0;
     }
 }
